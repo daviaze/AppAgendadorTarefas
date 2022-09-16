@@ -6,9 +6,13 @@ import 'btt_card_tarefas.dart';
 class CardTarefas extends StatefulWidget {
   final String nome;
   final int level;
+  final String urlfoto;
   final VoidCallback updateLevel;
   const CardTarefas(
-      {Key? key, required this.nome, required this.updateLevel, required this.level})
+      {Key? key,
+      required this.nome,
+      required this.updateLevel,
+      required this.level, required this.urlfoto})
       : super(key: key);
 
   @override
@@ -41,6 +45,10 @@ class _CardTarefasState extends State<CardTarefas> {
                     color: Color(0xffE6E6E6),
                     height: 150,
                     width: 100,
+                    child: Image.network(
+                      widget.urlfoto,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   Container(
                     color: Colors.white,
@@ -60,8 +68,7 @@ class _CardTarefasState extends State<CardTarefas> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Icon(Icons.arrow_drop_up,
-                                  color: Colors.white),
+                              Icon(Icons.arrow_drop_up, color: Colors.white),
                               Text(
                                 "Lvl Up",
                                 style: TextStyle(color: Colors.white),
@@ -88,7 +95,7 @@ class _CardTarefasState extends State<CardTarefas> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: LinearProgressIndicator(
-                    value: widget.level / 100,
+                    value: widget.level / 10,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Colors.white,
                     ),
