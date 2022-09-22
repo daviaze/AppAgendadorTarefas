@@ -13,10 +13,10 @@ class Tarefas extends StatefulWidget {
 
 class _TarefasState extends State<Tarefas> {
   List<Tarefa> lista = [];
+  double esconderLista = 1;
+
   @override
   void initState() {
-    lista.add(Tarefa("Jogar lol", 10,
-        "https://cdn-0.imagensemoldes.com.br/wp-content/uploads/2020/05/%C3%8Dcone-Cupcake-PNG.png"));
     super.initState();
   }
 
@@ -25,43 +25,62 @@ class _TarefasState extends State<Tarefas> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tarefas'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  esconderLista = esconderLista == 1 ? 0 : 1;
+                });
+              },
+              child: const Icon(Icons.remove_red_eye),
+            ),
+          )
+        ],
       ),
-      body: ListView.builder(
-        itemCount: lista.length,
-        itemBuilder: (_, index) {
-          final item = lista[index];
-          return CardTarefas(
-            nome: item.nome!,
-            updateLevel: () {
-              setState(() {
-                if (lista[index].level! < 10) {
-                  lista[index] = item..level = item.level! + 1;
-                }
-              });
-            },
-            level: item.level!,
-            urlfoto: item.urlfoto!,
-          );
-        },
+      body: AnimatedOpacity(
+        opacity: esconderLista,
+        duration: const Duration(milliseconds: 500),
+        child: ListView.builder(
+          itemCount: lista.length,
+          itemBuilder: (_, index) {
+            final item = lista[index];
+            return CardTarefas(
+              nome: item.nome!,
+              updateLevel: () {
+                setState(() {
+                  if (lista[index].level! < 10 * lista[index].dificuldade!) {
+                    lista[index] = item..level = item.level! + 1;
+                  }
+                });
+              },
+              level: item.level!,
+              dificuldade: item.dificuldade!,
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
-              title: Text("Criar Tarefa"),
-              content: Container(
+              title: const Text("Criar Tarefa"),
+              content: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: DialogCreateTarefa(),
+                child: DialogCreateTarefa(
+                  criarTarefa: (String nome, int dificuldade) {
+                    setState(() {
+                      lista.add(Tarefa(nome, 0, dificuldade));
+                    });
+                  },
+                ),
               ),
             ),
           );
-          /*setState(() {
-            lista.add(Tarefa("comer", 1, "https://cdn-0.imagensemoldes.com.br/wp-content/uploads/2020/05/%C3%8Dcone-Cupcake-PNG.png"));
-          });*/
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

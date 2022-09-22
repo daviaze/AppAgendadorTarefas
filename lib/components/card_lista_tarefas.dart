@@ -1,18 +1,19 @@
+import 'package:agendador_tarefas_flutter/components/stars_card_tarefas.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/page_tarefas.dart';
 import 'btt_card_tarefas.dart';
 
 class CardTarefas extends StatefulWidget {
   final String nome;
   final int level;
-  final String urlfoto;
+  final int dificuldade;
   final VoidCallback updateLevel;
   const CardTarefas(
       {Key? key,
       required this.nome,
       required this.updateLevel,
-      required this.level, required this.urlfoto})
+      required this.level,
+      required this.dificuldade})
       : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class _CardTarefasState extends State<CardTarefas> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         color: Theme.of(context).primaryColor,
@@ -42,12 +43,20 @@ class _CardTarefasState extends State<CardTarefas> {
               child: Row(
                 children: [
                   Container(
-                    color: Color(0xffE6E6E6),
                     height: 150,
                     width: 100,
-                    child: Image.network(
-                      widget.urlfoto,
-                      fit: BoxFit.contain,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: const Color(0xffE6E6E6),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.asset(
+
+                        'assets/images/logo_task.png',
+                        fit: BoxFit.contain,
+                        
+                      ),
                     ),
                   ),
                   Container(
@@ -59,12 +68,23 @@ class _CardTarefasState extends State<CardTarefas> {
                       children: [
                         Container(
                           width: 140,
-                          child: Text(widget.nome,
-                              style: TextStyle(
-                                  fontSize: 23,
-                                  overflow: TextOverflow.ellipsis)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.nome,
+                                  style: const TextStyle(
+                                      fontSize: 23,
+                                      overflow: TextOverflow.ellipsis)),
+                              StarsCard(dificuldade: widget.dificuldade),
+                            ],
+                          ),
                         ),
                         BttCardTarefas(
+                          onTap: () {
+                            widget.updateLevel();
+                          },
+                          height: 63,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: const [
@@ -75,10 +95,6 @@ class _CardTarefasState extends State<CardTarefas> {
                               ),
                             ],
                           ),
-                          onTap: () {
-                            widget.updateLevel();
-                          },
-                          height: 63,
                         ),
                       ],
                     ),
@@ -87,7 +103,7 @@ class _CardTarefasState extends State<CardTarefas> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -95,7 +111,7 @@ class _CardTarefasState extends State<CardTarefas> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: LinearProgressIndicator(
-                    value: widget.level / 10,
+                    value: widget.dificuldade > 0 ? (widget.level/widget.dificuldade) / 10 : 1,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Colors.white,
                     ),
