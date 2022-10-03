@@ -1,13 +1,22 @@
 import 'dart:io';
 
+import 'package:agendador_tarefas_flutter/data/tarefa_inherited.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class DialogCreateTarefa extends StatelessWidget {
-  final Function criarTarefa;
-  const DialogCreateTarefa({Key? key, required this.criarTarefa})
+import '../models/tarefa.dart';
+
+class DialogCreateTarefa extends StatefulWidget {
+  const DialogCreateTarefa({Key? key, required this.tarefaContext})
       : super(key: key);
 
+  final BuildContext tarefaContext;
+
+  @override
+  State<DialogCreateTarefa> createState() => _DialogCreateTarefaState();
+}
+
+class _DialogCreateTarefaState extends State<DialogCreateTarefa> {
   @override
   Widget build(BuildContext context) {
     TextEditingController nomeTarefaController = TextEditingController();
@@ -70,8 +79,10 @@ class DialogCreateTarefa extends StatelessWidget {
                       content: Text("Tarefa criada!"),
                     ),
                   );
-                  criarTarefa(nomeTarefaController.text,
-                      int.parse(dificuldadeController.text));
+                  setState(() {
+                    TarefaInherited.of(widget.tarefaContext).listaTarefas.add(Tarefa(nomeTarefaController.text, 0,
+                        int.parse(dificuldadeController.text)));
+                  });
                   Navigator.of(context).pop( );
                 }
               },

@@ -2,6 +2,7 @@ import 'package:agendador_tarefas_flutter/components/dialog_create_tarefa.dart';
 import 'package:flutter/material.dart';
 
 import '../components/card_lista_tarefas.dart';
+import '../data/tarefa_inherited.dart';
 import '../models/tarefa.dart';
 
 class Tarefas extends StatefulWidget {
@@ -12,7 +13,6 @@ class Tarefas extends StatefulWidget {
 }
 
 class _TarefasState extends State<Tarefas> {
-  List<Tarefa> lista = [];
   double esconderLista = 1;
 
   @override
@@ -43,15 +43,15 @@ class _TarefasState extends State<Tarefas> {
         opacity: esconderLista,
         duration: const Duration(milliseconds: 500),
         child: ListView.builder(
-          itemCount: lista.length,
+          itemCount: TarefaInherited.of(context).listaTarefas.length,
           itemBuilder: (_, index) {
-            final item = lista[index];
+            final item = TarefaInherited.of(context).listaTarefas[index];
             return CardTarefas(
               nome: item.nome!,
               updateLevel: () {
                 setState(() {
-                  if (lista[index].level! < 10 * lista[index].dificuldade!) {
-                    lista[index] = item..level = item.level! + 1;
+                  if (TarefaInherited.of(context).listaTarefas[index].level! < 10 * TarefaInherited.of(context).listaTarefas[index].dificuldade!) {
+                    TarefaInherited.of(context).listaTarefas[index] = item..level = item.level! + 1;
                   }
                 });
               },
@@ -69,13 +69,7 @@ class _TarefasState extends State<Tarefas> {
               title: const Text("Criar Tarefa"),
               content: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                child: DialogCreateTarefa(
-                  criarTarefa: (String nome, int dificuldade) {
-                    setState(() {
-                      lista.add(Tarefa(nome, 0, dificuldade));
-                    });
-                  },
-                ),
+                child: DialogCreateTarefa(tarefaContext: context),
               ),
             ),
           );
