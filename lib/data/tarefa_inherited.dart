@@ -1,3 +1,4 @@
+import 'package:agendador_tarefas_flutter/data/database_tarefas.dart';
 import 'package:flutter/material.dart';
 
 import '../models/tarefa.dart';
@@ -10,8 +11,9 @@ class TarefaInherited extends InheritedWidget {
 
   final List<Tarefa> listaTarefas = [];
 
-  void newTarefa(String nome, int level, int dificuldade){
-    listaTarefas.add(new Tarefa(nome, level, dificuldade));
+  static void newTarefa(String nome, int level, int dificuldade){
+    //listaTarefas.add(new Tarefa(nome, level, dificuldade));
+    SqlData.insertTarefa(new Tarefa(nome, level, dificuldade, 0));
   }
 
   static TarefaInherited of(BuildContext context) {

@@ -1,5 +1,7 @@
 import 'package:agendador_tarefas_flutter/components/dialog_create_tarefa.dart';
+import 'package:agendador_tarefas_flutter/data/database_tarefas.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../components/card_lista_tarefas.dart';
 import '../data/tarefa_inherited.dart';
@@ -17,12 +19,14 @@ class _TarefasState extends State<Tarefas> {
 
   @override
   void initState() {
+    SqlData.getDatabase();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      Scaffold(
       appBar: AppBar(
         title: const Text('Tarefas'),
         actions: [
@@ -42,22 +46,54 @@ class _TarefasState extends State<Tarefas> {
       body: AnimatedOpacity(
         opacity: esconderLista,
         duration: const Duration(milliseconds: 500),
-        child: ListView.builder(
-          itemCount: TarefaInherited.of(context).listaTarefas.length,
-          itemBuilder: (_, index) {
-            final item = TarefaInherited.of(context).listaTarefas[index];
-            return CardTarefas(
-              nome: item.nome!,
-              updateLevel: () {
-                setState(() {
-                  if (TarefaInherited.of(context).listaTarefas[index].level! < 10 * TarefaInherited.of(context).listaTarefas[index].dificuldade!) {
-                    TarefaInherited.of(context).listaTarefas[index] = item..level = item.level! + 1;
-                  }
-                });
-              },
-              level: item.level!,
-              dificuldade: item.dificuldade!,
+        child: FutureBuilder(
+          future: SqlData.getTarefas(),
+          builder: (_, index) {
+            int? len = index.data?.length;
+            List<Tarefa>? tarefas = [];
+            tarefas = index.data?.toList();
+            //item.forEach((i)
+            //{
+              return ListView.builder(
+                itemCount: len,
+                itemBuilder: (_, index) {
+                  return CardTarefas(
+                    nome: tarefas?[index]?.nome ?? "",
+                    updateLevel: () {
+                      setState(() {
+                        if (tarefas![index].level! < 10 * tarefas[index].dificuldade!) {
+                          SqlData.updateTarefa(tarefas[index].ID, tarefas[index].level! + 1);
+                        }else {
+                          showDialog(
+                              context: context,
+                              builder: (_) =>
+                                  AlertDialog(
+                                    backgroundColor: Colors.transparent,
+                                    content: SizedBox(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width * 0.8,
+                                      child: Lottie.asset(
+                                        'assets/images/congratulations-2.json',
+                                        width: 60,
+                                        height: 200,
+                                        fit: BoxFit.scaleDown,
+                                        repeat: false,
+                                        reverse: false,
+                                        animate: true,
+                                      ),
+                                    ),
+                                  ));
+                        }
+                      });
+                    },
+                    level: tarefas?[index].level ?? 0,
+                    dificuldade: tarefas?[index].dificuldade ?? 0,
+                  );
+                }
             );
+            //});
           },
         ),
       ),

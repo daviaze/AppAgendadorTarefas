@@ -4,6 +4,7 @@ import 'package:agendador_tarefas_flutter/data/tarefa_inherited.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../data/database_tarefas.dart';
 import '../models/tarefa.dart';
 
 class DialogCreateTarefa extends StatefulWidget {
@@ -80,8 +81,7 @@ class _DialogCreateTarefaState extends State<DialogCreateTarefa> {
                     ),
                   );
                   setState(() {
-                    TarefaInherited.of(widget.tarefaContext).listaTarefas.add(Tarefa(nomeTarefaController.text, 0,
-                        int.parse(dificuldadeController.text)));
+                    SqlData.insertTarefa(new Tarefa(nomeTarefaController.text, 0, int.parse(dificuldadeController.text), 0));
                   });
                   Navigator.of(context).pop( );
                 }
