@@ -1,11 +1,5 @@
-import 'dart:io';
-
-import 'package:agendador_tarefas_flutter/data/tarefa_inherited.dart';
+import 'package:agendador_tarefas_flutter/providers/tarefa_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-
-import '../data/database_tarefas.dart';
-import '../models/tarefa.dart';
 
 class DialogCreateTarefa extends StatefulWidget {
   const DialogCreateTarefa({Key? key, required this.tarefaContext})
@@ -22,11 +16,10 @@ class _DialogCreateTarefaState extends State<DialogCreateTarefa> {
   Widget build(BuildContext context) {
     TextEditingController nomeTarefaController = TextEditingController();
     TextEditingController dificuldadeController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
-    var duration = const Duration(seconds: 5);
+    final formKey = GlobalKey<FormState>();
 
     return Form(
-      key: _formKey,
+      key: formKey,
       child: SingleChildScrollView(
         //SingleChildScrollView faz com que quando o teclado é acionado, ele não exprema o container, podendo causar assim um overflow, ele irá deixar o container rolável quanto o teclado for acionado
         child: Column(
@@ -57,7 +50,7 @@ class _DialogCreateTarefaState extends State<DialogCreateTarefa> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   /*showDialog(
                       context: context,
                       builder: (_) => AlertDialog(
@@ -81,7 +74,7 @@ class _DialogCreateTarefaState extends State<DialogCreateTarefa> {
                     ),
                   );
                   setState(() {
-                    SqlData.insertTarefa(new Tarefa(nomeTarefaController.text, 0, int.parse(dificuldadeController.text), 0));
+                    TarefaProvider.newTarefa(nomeTarefaController.text, 0, int.parse(dificuldadeController.text));
                   });
                   Navigator.of(context).pop( );
                 }

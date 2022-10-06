@@ -1,7 +1,7 @@
 import 'package:agendador_tarefas_flutter/pages/page_tarefas.dart';
 import 'package:flutter/material.dart';
 
-import 'data/tarefa_inherited.dart';
+import 'providers/tarefa_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: TarefaInherited(child: const Tarefas()),
+      home: TarefaProvider(child: const Tarefas()),
     );
   }
 }

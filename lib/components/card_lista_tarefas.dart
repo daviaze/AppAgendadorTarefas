@@ -47,15 +47,14 @@ class _CardTarefasState extends State<CardTarefas> {
                     width: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffE6E6E6),
+                      color: Colors.grey.shade50,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.asset(
-
-                        'assets/images/logo_task.png',
-                        fit: BoxFit.contain,
-                        
+                      child: const Icon(
+                        Icons.task_alt,
+                        color: Color(0xFF029EF2),
+                        size: 75,
                       ),
                     ),
                   ),
@@ -66,7 +65,7 @@ class _CardTarefasState extends State<CardTarefas> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 140,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -108,19 +107,19 @@ class _CardTarefasState extends State<CardTarefas> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: LinearProgressIndicator(
                     value: widget.dificuldade > 0 ? (widget.level/widget.dificuldade) / 10 : 1,
-                    valueColor: AlwaysStoppedAnimation<Color>(
+                    valueColor: const AlwaysStoppedAnimation<Color>(
                       Colors.white,
                     ),
                     backgroundColor: Colors.white70,
                   ),
                 ),
                 Text(
-                  "Nível: " + widget.level.toString(),
-                  style: TextStyle(color: Colors.white),
+                  "Nível: ${widget.level}",
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),

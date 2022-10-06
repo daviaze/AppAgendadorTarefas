@@ -12,28 +12,28 @@ class StarsCard extends StatelessWidget {
           Icons.star,
           size: 15,
           color: dificuldade > 0
-              ? Colors.indigo
+              ? const Color(0xFF029EF2)
               : Colors.indigo[100],
         ),
         Icon(Icons.star,
             size: 15,
             color: dificuldade > 1
-                ? Colors.indigo
+                ? const Color(0xFF029EF2)
                 : Colors.indigo[100]),
         Icon(Icons.star,
             size: 15,
             color: dificuldade > 2
-                ? Colors.indigo
+                ? const Color(0xFF029EF2)
                 : Colors.indigo[100]),
         Icon(Icons.star,
             size: 15,
             color: dificuldade > 3
-                ? Colors.indigo
+                ? const Color(0xFF029EF2)
                 : Colors.indigo[100]),
         Icon(Icons.star,
             size: 15,
             color: dificuldade > 4
-                ? Colors.indigo
+                ? const Color(0xFF029EF2)
                 : Colors.indigo[100]),
       ],
     );

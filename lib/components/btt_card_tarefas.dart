@@ -20,7 +20,7 @@ class BttCardTarefas extends StatelessWidget {
   final String? text;
   final TextStyle? textStyle;
 
-  BttCardTarefas({
+  const BttCardTarefas({
     Key? key,
     this.onTap,
     this.splashColor,
@@ -38,7 +38,7 @@ class BttCardTarefas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: elevation ?? 4,
-      color: colorBg != null ? colorBg : Theme.of(context).primaryColor,
+      color: colorBg ?? Theme.of(context).primaryColorDark,
       borderRadius: BorderRadius.circular(radius),
       child: InkWell(
         onTap: onTap,
@@ -73,7 +73,7 @@ class BttCardTarefas extends StatelessWidget {
               if(content == null && child == null && text != null) {
                 return Text(
                   text!,
-                  style: textStyle ?? TextStyle(
+                  style: textStyle ?? const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
                   ),
